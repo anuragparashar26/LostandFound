@@ -252,3 +252,91 @@ footer {
 html {
     scroll-behavior: smooth;
 }
+
+
+
+/*Responsiveness*/
+
+@media (max-width: 768px) {
+    
+    .nav-links {
+        gap: 10px;
+        padding: 10px;
+        display: none; 
+        flex-direction: column;
+        position: absolute; 
+        top: 70px; 
+        right: 0;
+        background-color: #000; 
+        width: 100%;
+        z-index: 1; 
+        flex-direction: column;
+        margin-right: 0;
+        margin-top: 10px;
+        background-color: black;
+        margin-left: auto;
+    }
+
+    .nav-links.active {
+        border-radius: 20px;
+        display: flex;
+    }
+
+    .hamburger {
+        display: block; 
+        color: white;
+        
+    }
+
+    .nav-links a {
+        color: white;
+        padding: 10px;
+        text-align: center; 
+    }
+
+    .name {
+        margin-left: 0;
+        margin-bottom: 10px;
+        padding-top: 10px;
+        font-size: x-large;
+    }
+
+    .pg1, .pg2, .pg3, .pg4 {
+        flex-direction: column;
+        padding: 20px;
+    }
+
+    .about-section {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .about-image {
+        width: auto;
+        max-width: 70%;
+        margin-bottom: 10px;
+    }
+
+    .about-text {
+        max-width: 100%;
+        width: auto;
+        text-align: justify;
+        text-justify: inter-word;
+    }
+
+    h1 {
+        font-size: 24px;
+    }
+
+    h2 {
+        font-size: 20px;
+    }
+
+    p {
+        font-size: 16px;
+    }
+
+    .contact-form-container {
+        padding: 15px;
+    }
+}
