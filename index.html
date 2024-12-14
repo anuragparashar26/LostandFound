@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lost & Found</title>
+    <link rel="icon" href="/static/dp_title.png">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <div class="name">
+            Lost & Found
+        </div>
+        <div class="nav-links" id="navLinks">
+            <div class="home">
+                <a href="#pg1" class="hide-link">Home</a>
+            </div>
+            <div class="about">
+                <a href="#pg2" class="hide-link"><span>About Us</span></a>
+            </div>
+            <div class="recent">
+                <a href="/signin.html" class="hide-link"><span>Dashboard</span></a>
+            </div>
+            <div class="contact">
+                <a href="#pg4" class="hide-link"><span>Contact</span></a>
+            </div>
+        </div>
+        <div class="sign-in">
+            <a href="/signin.html">Sign In</a>
+        </div>
+        <div class="hamburger" onclick="toggleMenu()">
+            &#9776;
+        </div>
+    </header>
+    
+    <div class="pg1" id="pg1">
+    
+
+        <div class="title">
+            <b>Lost & Found Platform</b>
+            <h2>A Solution for Listing and Reclaiming Lost Belongings.</h2>
+        </div>       
+    </div>
+
+    <div class="pg2" id="pg2">
+        <div class="section-header">
+            <h2>About Us</h2>
+            <div class="dash"></div>
+        </div>
+    
+        <div class="about-section">
+            <div class="about-image">
+                <img src="/static/dp.png" alt="About Me" class="about-img">
+            </div>
+            <div class="about-text">
+                <p>
+                    Our digital lost and found platform provides a streamlined and intuitive 
+                    solution for reconnecting people with their lost belongings. Through a 
+                    user-friendly interface, individuals can quickly post details about lost 
+                    or found items, search for matches, and receive real-time updates. By 
+                    leveraging technology to create a reliable network, the platform reduces 
+                    the hassle and stress associated with misplaced items,
+                    offering a seamless and efficient way to bridge the gap between lost and found.
+                </p>
+            </div>
+        </div>
+    
+        
+    </div>
+        
+
+    <div class="pg4" id="pg4">
+        <div class="contact-form-container">
+            <h2>Contact Us</h2>
+            <div class="dash"></div>
+            <form action="https://formspree.io/f/xjkvkdgq" method="POST" id="contactForm">
+                <label for="name">Name</label>
+                <input type="text" id="name" name="name" required minlength="3">
+              
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required>
+              
+                <label for="subject">Subject</label>
+                <input type="text" id="subject" name="subject" maxlength="50">
+              
+                <label for="message">Message</label>
+                <textarea id="message" name="message" rows="4" required minlength="10"></textarea>
+              
+                <button type="submit">Send Message</button>
+            </form>
+            <div class="powered-by">
+                <span>Powered by Formspree</span>
+                <a href="https://formspree.io" target="_blank" rel="noopener noreferrer" class="formspree-logo">
+                    <div class="line long"></div>
+                    <div class="line long"></div>
+                    <div class="line short"></div>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <div class="logofoot">
+                <img src="/static/dp_light.png">
+            </div>
+            <div class="copyright-text">
+                Designed with ❤️<br>
+            </div> 
+        </div>
+    </footer> 
+
+    <script>
+    function toggleMenu() {
+    const navLinks = document.getElementById('navLinks');
+    navLinks.classList.toggle('active');
+
+    if (navLinks.classList.contains('active')) {
+        const links = navLinks.querySelectorAll('a');
+        links.forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('active'); 
+            });
+        });
+    }
+}
+    </script>
+</body>
+</html>
