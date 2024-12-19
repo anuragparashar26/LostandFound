@@ -110,6 +110,26 @@ header {
     color: inherit;
 }
 
+/* Post Now Button */
+.post-now {
+    margin-top: 20px;
+    padding: 15px 30px;
+    font-size: 18px;
+    font-weight: bold;
+    background-color: #000000;
+    color: white;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    text-decoration: none;
+}
+
+.post-now:hover {
+    color: rgb(0, 0, 0);
+    background-color: #ffffff;
+}
+
 
 /*Page2*/
 
