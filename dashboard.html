@@ -69,6 +69,10 @@
             <label for="verificationAnswer">Verification Answer</label>
             <input type="text" id="verificationAnswer" placeholder="Enter verification answer">
 
+            <!-- Contact Information -->
+            <label for="contactInfo">Your Contact Information</label>
+            <input type="text" id="contactInfo" placeholder="Enter your Contact Details">
+
             <button onclick="addLostItem()">Add Lost Item</button>
             <br><br>
             <button onclick="addFoundItem()">Add Found Item</button>
@@ -89,8 +93,18 @@
         </div>
     </div>
 
+    <!-- Contact Information Display -->
+    <div id="contactModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeContactPopup()">&times;</span>
+
+            <h2>Contact Information</h2>
+            <p id="contactInfoDisplay"></p>
+        </div>
+    </div>
+
 </main>
 
-<script src = "script.js"></script>
+<script src="script.js"></script>
 </body>
 </html>

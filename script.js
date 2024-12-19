@@ -20,6 +20,7 @@ function addLostItem() {
     const location = document.getElementById('location').value;
     const date = document.getElementById('date').value;
     const description = document.getElementById('description').value;
+    const contactInfo = document.getElementById('contactInfo').value; // Contact Information
     const imageInput = document.getElementById('image');
     const imageFile = imageInput.files[0];
     const verificationQuestion = document.getElementById('verificationQuestion').value;
@@ -37,9 +38,10 @@ function addLostItem() {
             date,
             description,
             imageUrl,
+            contact: contactInfo, // Store contact information
             claimed: false,
             question: verificationQuestion,
-            answer: verificationAnswer
+            answer: verificationAnswer,
         };
 
         lostItems.push(newItem);
@@ -63,6 +65,7 @@ function addFoundItem() {
     const location = document.getElementById('location').value;
     const date = document.getElementById('date').value;
     const description = document.getElementById('description').value;
+    const contactInfo = document.getElementById('contactInfo').value; // Contact Information
     const imageInput = document.getElementById('image');
     const imageFile = imageInput.files[0];
     const verificationQuestion = document.getElementById('verificationQuestion').value;
@@ -80,9 +83,10 @@ function addFoundItem() {
             date,
             description,
             imageUrl,
+            contact: contactInfo, // Store contact information
             claimed: false,
             question: verificationQuestion,
-            answer: verificationAnswer
+            answer: verificationAnswer,
         };
 
         foundItems.push(newItem);
@@ -99,7 +103,7 @@ function addFoundItem() {
     }
 }
 
-// Render Lost Items in Cards
+// Render Items in Cards
 function renderItems(items, containerId) {
     const container = document.getElementById(containerId);
     container.innerHTML = '';
@@ -171,6 +175,7 @@ function verifyClaim() {
                 renderItems(foundItems, 'foundCards');
             }
 
+            alert(`Claim verified successfully! Contact Person: ${items[currentItemIndex].contact}`);
             closeClaimPopup();
         } else {
             alert('Incorrect answer. Claim verification failed.');
@@ -195,5 +200,6 @@ function clearForm() {
     document.getElementById('image').value = '';
     document.getElementById('verificationQuestion').value = '';
     document.getElementById('verificationAnswer').value = '';
+    document.getElementById('contactInfo').value = '';
     document.getElementById('claimAnswer').value = '';
 }
