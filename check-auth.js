@@ -1,5 +1,5 @@
 import { app } from './config.js'; 
-import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-auth.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js";
 
 const auth = getAuth(app);
 
