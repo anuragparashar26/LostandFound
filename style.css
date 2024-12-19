@@ -167,6 +167,21 @@ p {
     font-size: x-large;
 }
 
+.pg3 {
+    padding: 10px 0;
+}
+.how-to-use-section ol {
+    font-size: 18px;
+    line-height: 1.6;
+}
+.how-to-use-section li {
+    margin-bottom: 15px;
+}
+.how-to-use-section strong {
+    font-weight: bold;
+}
+
+
 /*Contact Form*/
 
 
