@@ -1,4 +1,4 @@
-import { firebaseConfig } from "../firebase/firebase-config.js";
+import { firebaseConfig } from "../firebase-config.js";
 const firebaseApp = firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const signoutBtn = document.querySelector('#signoutbtn');
