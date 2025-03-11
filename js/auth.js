@@ -1,6 +1,11 @@
-import {firebaseConfig} from '../firebase-config.js';
-require('dotenv').config();
-  const firebaseApp = firebase.initializeApp(firebaseConfig);
+fetch('https://lostandfound-p133.onrender.com') // Replace with your Render URL
+  .then(response => response.json())
+  .then(firebaseConfig => {
+    firebase.initializeApp(firebaseConfig);
+    console.log("Firebase initialized:", firebaseConfig);
+  })
+  .catch(error => console.error("Error fetching Firebase config:", error));
+
   const auth = firebase.auth();
   const firestore = firebase.firestore();
   const signupForm = document.querySelector('.registration.form');

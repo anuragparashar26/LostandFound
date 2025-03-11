@@ -1,6 +1,11 @@
-import { firebaseConfig } from "../firebase-config.js";
-require('dotenv').config();
-const firebaseApp = firebase.initializeApp(firebaseConfig);
+fetch('https://lostandfound-p133.onrender.com') 
+  .then(response => response.json())
+  .then(firebaseConfig => {
+    firebase.initializeApp(firebaseConfig);
+    console.log("Firebase initialized:", firebaseConfig);
+  })
+  .catch(error => console.error("Error fetching Firebase config:", error));
+
 const auth = firebase.auth();
 const signoutBtn = document.querySelector('#signoutbtn');
 signoutBtn.addEventListener('click', () => {
