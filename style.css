@@ -25,7 +25,7 @@ body, html {
 /*Page1*/
 
 .pg1 {
-    background-image: url(/assets/mainbg.jpg);
+    background-image: url(/static/mainbg.jpg);
     background-size: 100% 100%;
 }
 
@@ -313,9 +313,7 @@ html {
     scroll-behavior: smooth;
 }
 
-.hamburger {
-    display: none;
-}
+
 
 /*Responsiveness*/
 

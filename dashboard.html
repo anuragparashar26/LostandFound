@@ -4,14 +4,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dashboard</title>
-  <link rel="stylesheet" href="./dash.css">
-  <script src="../js/dashboard.js" type="module"></script>
+  <link rel="stylesheet" href="dash.css">
 </head>
 <body>
 
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
-  <script src="../js/dashboard.js" type="module"></script>
+  <script src="page1.js" type="module"></script>
 
   <header>
     <h1>Welcome to Your Dashboard</h1>
@@ -21,19 +20,20 @@
 
 <main>
 
+    <!-- Lost Items Section -->
      <br>
     <section id="lost-items">
         <h2>Lost Items</h2>
         <div id="lostCards" class="cards-container"></div>
     </section>
 
-
+    <!-- Found Items Section -->
     <section id="found-items">
         <h2>Found Items</h2>
         <div id="foundCards" class="cards-container"></div>
     </section>
 
-
+    <!-- Popup Modal -->
     <div id="popupModal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="closePopup()">&times;</span>
@@ -50,7 +50,6 @@
                 <option value="bags">Bags</option>
                 <option value="others">Others</option>
             </select>
-            document.getElementById('popupModal').style.display = 'none';
 
             <label for="location">Location</label>
             <input type="text" id="location" placeholder="Enter location">
@@ -64,14 +63,14 @@
             <label for="image">Upload Image</label>
             <input type="file" id="image" accept="image/*">
             <br><br>
-     
+            <!-- Verification Question & Answer -->
             <label for="verificationQuestion">Verification Question</label>
             <input type="text" id="verificationQuestion" placeholder="Enter verification question">
 
             <label for="verificationAnswer">Verification Answer</label>
             <input type="text" id="verificationAnswer" placeholder="Enter verification answer">
 
-    
+            <!-- Contact Information -->
             <label for="contactInfo">Your Contact Information</label>
             <input type="text" id="contactInfo" placeholder="Enter your Contact Details">
 
@@ -81,7 +80,7 @@
         </div>
     </div>
 
-
+    <!-- Claim Verification Popup -->
     <div id="claimModal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="closeClaimPopup()">&times;</span>
@@ -95,7 +94,7 @@
         </div>
     </div>
 
-
+    <!-- Contact Information Display -->
     <div id="contactModal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="closeContactPopup()">&times;</span>
@@ -106,5 +105,7 @@
     </div>
 
 </main>
+
+<script src="script.js"></script>
 </body>
 </html>

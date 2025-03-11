@@ -1,64 +1,26 @@
-import { firebaseConfig } from "../firebase/firebase-config.js";
-const firebaseApp = firebase.initializeApp(firebaseConfig);
-const auth = firebase.auth();
-const signoutBtn = document.querySelector('#signoutbtn');
-signoutBtn.addEventListener('click', () => {
-  auth.signOut()
-    .then(() => {
-      console.log('User signed out successfully');
-      location.href = "../public/index.html";
-    })
-    .catch((error) => {
-      alert('Error signing out: ', error);
-    });
-});
-
-auth.onAuthStateChanged((user) => {
-    if (user) {
-      document.getElementById("user-email").innerText = user.email;
-    } else {
-      window.location.href = "../public/signin.html";
-    }
-  });
-
-  
 const lostItems = [];
 const foundItems = [];
 let currentItemIndex = null;
-let currentItemType = '';
+let currentItemType = '';  // Track whether it's a lost or found item
 
-
+// Open the popup modal
 document.getElementById('addItemBtn').addEventListener('click', function() {
     document.getElementById('popupModal').style.display = 'block';
 });
 
+// Close the popup modal
 function closePopup() {
-    const modal = document.getElementById('popupModal');
-    if (modal) {
-        modal.style.display = 'none';
-    } else {
-        console.error("Modal not found!");
-    }
+    document.getElementById('popupModal').style.display = 'none';
 }
 
-document.querySelector('.close').addEventListener('click', closePopup);
-
-window.onclick = function(event) {
-    const modal = document.getElementById('popupModal');
-    if (event.target === modal) {
-        closePopup();
-    }
-};
-
-
-
+// Add Lost Item
 function addLostItem() {
     const title = document.getElementById('itemTitle').value;
     const category = document.getElementById('category').value;
     const location = document.getElementById('location').value;
     const date = document.getElementById('date').value;
     const description = document.getElementById('description').value;
-    const contactInfo = document.getElementById('contactInfo').value;
+    const contactInfo = document.getElementById('contactInfo').value; // Contact Information
     const imageInput = document.getElementById('image');
     const imageFile = imageInput.files[0];
     const verificationQuestion = document.getElementById('verificationQuestion').value;
@@ -76,7 +38,7 @@ function addLostItem() {
             date,
             description,
             imageUrl,
-            contact: contactInfo,
+            contact: contactInfo, // Store contact information
             claimed: false,
             question: verificationQuestion,
             answer: verificationAnswer,
@@ -96,13 +58,14 @@ function addLostItem() {
     }
 }
 
+// Add Found Item
 function addFoundItem() {
     const title = document.getElementById('itemTitle').value;
     const category = document.getElementById('category').value;
     const location = document.getElementById('location').value;
     const date = document.getElementById('date').value;
     const description = document.getElementById('description').value;
-    const contactInfo = document.getElementById('contactInfo').value; 
+    const contactInfo = document.getElementById('contactInfo').value; // Contact Information
     const imageInput = document.getElementById('image');
     const imageFile = imageInput.files[0];
     const verificationQuestion = document.getElementById('verificationQuestion').value;
@@ -120,7 +83,7 @@ function addFoundItem() {
             date,
             description,
             imageUrl,
-            contact: contactInfo,
+            contact: contactInfo, // Store contact information
             claimed: false,
             question: verificationQuestion,
             answer: verificationAnswer,
@@ -140,6 +103,7 @@ function addFoundItem() {
     }
 }
 
+// Render Items in Cards
 function renderItems(items, containerId) {
     const container = document.getElementById(containerId);
     container.innerHTML = '';
@@ -186,6 +150,7 @@ function renderItems(items, containerId) {
     });
 }
 
+// Open Claim Verification Modal
 function verifyClaimPopup(index, itemType) {
     currentItemIndex = index;
     currentItemType = itemType;
@@ -194,6 +159,7 @@ function verifyClaimPopup(index, itemType) {
     document.getElementById('claimQuestion').innerText = questionText;
 }
 
+// Verify Claim
 function verifyClaim() {
     const answer = document.getElementById('claimAnswer').value;
 
@@ -219,11 +185,12 @@ function verifyClaim() {
     }
 }
 
+// Close the Claim Modal
 function closeClaimPopup() {
     document.getElementById('claimModal').style.display = 'none';
 }
 
-
+// Clear input form
 function clearForm() {
     document.getElementById('itemTitle').value = '';
     document.getElementById('category').value = '';
@@ -236,5 +203,3 @@ function clearForm() {
     document.getElementById('contactInfo').value = '';
     document.getElementById('claimAnswer').value = '';
 }
-
-
