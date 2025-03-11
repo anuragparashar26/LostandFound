@@ -1,5 +1,4 @@
-import {firebaseConfig} from '../firebase-config.js';
-  const firebaseApp = firebase.initializeApp(firebaseConfig);
+const firebaseApp = firebase.initializeApp(firebaseConfig);
   const auth = firebase.auth();
   const firestore = firebase.firestore();
   const signupForm = document.querySelector('.registration.form');
