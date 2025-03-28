@@ -69,7 +69,7 @@ import {firebaseConfig} from '../firebase/firebase-config.js';
         const user = userCredential.user;
         if (user.emailVerified) {
           console.log('User is signed in with a verified email.');
-          location.href = "dashboard.html";
+          location.href = "../public/dashboard.html";
         } else {
           alert('Please verify your email before signing in.');
         }
