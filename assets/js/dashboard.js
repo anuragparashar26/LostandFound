@@ -44,12 +44,20 @@ async function handleEditItem(e) {
     }
 
     const itemId = document.getElementById('edit-item-id').value;
+    const status = document.getElementById('edit-item-status').value;
+
+    // Validate status
+    if (!['lost', 'found'].includes(status)) {
+        showError('edit-error', 'Please select a valid status (lost or found).');
+        return;
+    }
+
     const itemData = {
         item_name: document.getElementById('edit-item-name').value,
         description: document.getElementById('edit-item-description').value,
         date: document.getElementById('edit-item-date').value,
         location: document.getElementById('edit-item-location').value,
-        status: document.getElementById('edit-item-status').value,
+        status: status,
         contact_info: document.getElementById('edit-contact-info').value
     };
 
@@ -94,9 +102,15 @@ async function deleteItem(itemId) {
     }
 }
 
-function editItem(item) {
+function editItem(index) {
     if (!currentUser) {
         window.location.href = 'login.html';
+        return;
+    }
+
+    const item = allItems[index];
+    if (!item) {
+        showError('edit-error', 'Item not found.');
         return;
     }
 

@@ -39,7 +39,12 @@ function displayItems(items, containerId, showActions = false) {
         return;
     }
 
-    const itemsHTML = items.map(item => {
+    // Store items in global array for reference
+    if (containerId === 'user-items') {
+        allItems = items; // Update global array for user items
+    }
+
+    const itemsHTML = items.map((item, index) => {
         const formattedDate = new Date(item.date).toLocaleDateString('en-US', {
             year: 'numeric',
             month: 'long',
@@ -47,7 +52,7 @@ function displayItems(items, containerId, showActions = false) {
         });
         const actionsHTML = showActions ? `
             <div class="item-actions">
-                <button onclick="editItem(${JSON.stringify(item).replace(/"/g, '"')})" class="btn-secondary">Edit</button>
+                <button onclick="editItem(${index})" class="btn-secondary">Edit</button>
                 <button onclick="deleteItem('${item.id}')" class="btn-danger">Delete</button>
             </div>
         ` : '';
