@@ -38,7 +38,7 @@ async function handleForgotPassword() {
 
     try {
         const { error } = await supabaseClient.auth.resetPasswordForEmail(email, {
-            redirectTo: window.location.origin + '/login.html'
+            redirectTo: window.location.origin + '/reset-password.html'
         });
         if (error) throw error;
         showMessage('login-error', 'Password reset email sent! Check your inbox.');
@@ -63,13 +63,19 @@ function setupAuthListeners() {
     document.getElementById('signup-form')?.addEventListener('submit', handleSignup);
 
     supabaseClient.auth.onAuthStateChange((event, session) => {
-        if (event === 'SIGNED_IN') {
-            currentUser = session.user;
+        if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') {
+            currentUser = session?.user || null;
             updateAuthUI();
+            const isResetPasswordPage = window.location.pathname.includes('reset-password.html');
+            if (isResetPasswordPage) {
+                return;
+            }
             if (window.location.pathname.includes('login.html')) {
                 window.location.href = 'dashboard.html';
             }
-            showWelcomeMessage(`Welcome back, ${session.user.email}!`);
+            if (currentUser && !isResetPasswordPage) {
+                showWelcomeMessage(`Welcome back, ${currentUser.email}!`);
+            }
         } else if (event === 'SIGNED_OUT') {
             currentUser = null;
             updateAuthUI();

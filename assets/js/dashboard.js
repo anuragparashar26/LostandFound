@@ -3,6 +3,7 @@ async function handleAddItem(e) {
 
     if (!currentUser) {
         showError('add-item-error', 'You must be logged in to post items');
+        window.location.href = 'login.html';
         return;
     }
 
@@ -36,6 +37,12 @@ async function handleAddItem(e) {
 async function handleEditItem(e) {
     e.preventDefault();
 
+    if (!currentUser) {
+        showError('edit-error', 'You must be logged in to edit items');
+        window.location.href = 'login.html';
+        return;
+    }
+
     const itemId = document.getElementById('edit-item-id').value;
     const itemData = {
         item_name: document.getElementById('edit-item-name').value,
@@ -64,6 +71,11 @@ async function handleEditItem(e) {
 }
 
 async function deleteItem(itemId) {
+    if (!currentUser) {
+        window.location.href = 'login.html';
+        return;
+    }
+
     if (!confirm('Are you sure you want to delete this item?')) return;
 
     try {
@@ -83,6 +95,11 @@ async function deleteItem(itemId) {
 }
 
 function editItem(item) {
+    if (!currentUser) {
+        window.location.href = 'login.html';
+        return;
+    }
+
     document.getElementById('edit-item-id').value = item.id;
     document.getElementById('edit-item-name').value = item.item_name;
     document.getElementById('edit-item-description').value = item.description;
@@ -94,7 +111,10 @@ function editItem(item) {
 }
 
 async function loadUserItems() {
-    if (!currentUser) return;
+    if (!currentUser) {
+        window.location.href = 'login.html';
+        return;
+    }
 
     try {
         const { data, error } = await supabaseClient
@@ -112,6 +132,11 @@ async function loadUserItems() {
 }
 
 function setupDashboardListeners() {
+    if (!currentUser) {
+        window.location.href = 'login.html';
+        return;
+    }
+
     document.querySelectorAll('.nav-tab').forEach(tab => {
         tab.addEventListener('click', (e) => {
             const tabName = e.target.dataset.tab;
