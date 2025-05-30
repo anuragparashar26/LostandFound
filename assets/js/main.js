@@ -56,11 +56,15 @@ function displayItems(items, containerId, showActions = false) {
             <div class="item-card ${item.status}">
                 <div class="item-header">
                     <div class="item-name">${item.item_name}</div>
-                    <div class="item-status status-${item.status}">${item.status}</div>
+                    <div class="item-status status-${item.status}">
+                        <i class="${item.status === 'found' ? 'fas fa-check-circle' : 'fas fa-exclamation-circle'}"></i>
+                        ${item.status}
+                    </div>
                 </div>
                 <div class="item-description">${item.description}</div>
                 <div class="item-meta">
                     <strong>Date:</strong> ${formattedDate}<br>
+                    <strong>Location:</strong> ${item.location || 'Not specified'}<br>
                     <strong>Contact:</strong> ${item.contact_info}
                 </div>
                 ${actionsHTML}

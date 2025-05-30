@@ -29,6 +29,24 @@ async function handleSignup(e) {
     }
 }
 
+async function handleForgotPassword() {
+    const email = document.getElementById('login-email').value;
+    if (!email) {
+        showError('login-error', 'Please enter your email to reset your password.');
+        return;
+    }
+
+    try {
+        const { error } = await supabaseClient.auth.resetPasswordForEmail(email, {
+            redirectTo: window.location.origin + '/login.html'
+        });
+        if (error) throw error;
+        showMessage('login-error', 'Password reset email sent! Check your inbox.');
+    } catch (error) {
+        showError('login-error', error.message);
+    }
+}
+
 async function signOut() {
     try {
         await supabaseClient.auth.signOut();

@@ -11,6 +11,7 @@ async function handleAddItem(e) {
         item_name: document.getElementById('item-name').value,
         description: document.getElementById('item-description').value,
         date: document.getElementById('item-date').value,
+        location: document.getElementById('item-location').value,
         status: document.getElementById('item-status').value,
         contact_info: document.getElementById('contact-info').value
     };
@@ -40,6 +41,7 @@ async function handleEditItem(e) {
         item_name: document.getElementById('edit-item-name').value,
         description: document.getElementById('edit-item-description').value,
         date: document.getElementById('edit-item-date').value,
+        location: document.getElementById('edit-item-location').value,
         status: document.getElementById('edit-item-status').value,
         contact_info: document.getElementById('edit-contact-info').value
     };
@@ -85,6 +87,7 @@ function editItem(item) {
     document.getElementById('edit-item-name').value = item.item_name;
     document.getElementById('edit-item-description').value = item.description;
     document.getElementById('edit-item-date').value = item.date;
+    document.getElementById('edit-item-location').value = item.location || '';
     document.getElementById('edit-item-status').value = item.status;
     document.getElementById('edit-contact-info').value = item.contact_info;
     showSection('edit');
