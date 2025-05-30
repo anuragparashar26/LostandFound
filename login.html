@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lost & Found - Login/Signup</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/auth.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-search"></i>
+                    <h1>Lost & Found</h1>
+                </div>
+                <div class="auth-buttons">
+                    <div id="guest-buttons">
+                        <button onclick="showSection('login')" class="btn-glass">
+                            <i class="fas fa-sign-in-alt"></i> Login
+                        </button>
+                        <button onclick="showSection('signup')" class="btn-secondary">
+                            <i class="fas fa-user-plus"></i> Sign Up
+                        </button>
+                    </div>
+                    <div id="user-buttons" style="display: none;">
+                        <span id="user-email"></span>
+                        <button onclick="window.location.href='dashboard.html'">
+                            <i class="fas fa-tachometer-alt"></i> Dashboard
+                        </button>
+                        <button onclick="signOut()" class="btn-danger">
+                            <i class="fas fa-sign-out-alt"></i> Sign Out
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div id="login-section" class="section active">
+            <div class="section-card">
+                <h2>Welcome Back</h2>
+                <div id="login-error" class="error-msg" style="display: none;">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <span></span>
+                </div>
+                <form id="login-form">
+                    <div class="form-group">
+                        <label for="login-email">Email</label>
+                        <input type="email" id="login-email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="login-password">Password</label>
+                        <input type="password" id="login-password" required>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit">Login</button>
+                        <button type="button" onclick="window.location.href='index.html'" class="btn-secondary">Back to Home</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div id="signup-section" class="section">
+            <div class="section-card">
+                <h2>Join Our Community</h2>
+                <div id="signup-error" class="error-msg" style="display: none;">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <span></span>
+                </div>
+                <div id="signup-success" class="error-msg" style="display: none;">
+                    <i class="fas fa-check-circle"></i>
+                    <span></span>
+                </div>
+                <form id="signup-form">
+                    <div class="form-group">
+                        <label for="signup-email">Email</label>
+                        <input type="email" id="signup-email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="signup-password">Password</label>
+                        <input type="password" id="signup-password" required minlength="6">
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn-success">Create Account</button>
+                        <button type="button" onclick="window.location.href='index.html'" class="btn-secondary">Back to Home</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="assets/js/supabaseClient.js"></script>
+    <script src="assets/js/auth.js"></script>
+    <script src="assets/js/main.js"></script>
+    <script>
+        if (window.location.hash === '#signup') {
+            showSection('signup');
+        }
+    </script>
+</body>
+</html>

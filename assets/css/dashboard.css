@@ -1,0 +1,101 @@
+.nav-tabs {
+    display: flex;
+    margin-bottom: 20px;
+    background: #f0f0f0;
+    border-radius: 10px;
+    padding: 5px;
+}
+
+.nav-tab {
+    flex: 1;
+    padding: 10px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    color: var(--gray);
+    border-radius: 8px;
+}
+
+.nav-tab.active {
+    background: var(--white);
+    color: var(--primary);
+}
+
+.items-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.item-card {
+    background: #fff;
+    border-radius: 10px;
+    padding: 15px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.item-card.found {
+    border-left: 4px solid var(--success);
+}
+
+.item-card.lost {
+    border-left: 4px solid var(--danger);
+}
+
+.item-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.item-name {
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.item-status {
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.status-found {
+    background: rgba(16, 185, 129, 0.1);
+    color: var(--success);
+}
+
+.status-lost {
+    background: rgba(239, 68, 68, 0.1);
+    color: var(--danger);
+}
+
+.item-description {
+    color: var(--gray);
+    margin-bottom: 10px;
+}
+
+.item-meta {
+    font-size: 14px;
+    color: var(--gray);
+    background: #f9f9f9;
+    padding: 10px;
+    border-radius: 8px;
+}
+
+.item-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+@media (max-width: 768px) {
+    .items-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .item-actions {
+        flex-direction: column;
+    }
+}
