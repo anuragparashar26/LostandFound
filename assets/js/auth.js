@@ -19,10 +19,12 @@ async function handleSignup(e) {
     const email = document.getElementById('signup-email').value;
     const password = document.getElementById('signup-password').value;
     const name = document.getElementById('signup-name').value;
+
     if (!name) {
         showError('signup-error', 'Please enter your name');
         return;
     }
+
     try {
         const { data, error } = await supabaseClient.auth.signUp({ 
             email, 
@@ -46,14 +48,6 @@ async function handleSignup(e) {
                 }
             ]);
         if (profileError) throw profileError;
-        const { error: updateError } = await supabaseClient.auth.updateUser({
-            data: { 
-                name: name,
-                full_name: name 
-            }
-        });
-        if (updateError) throw updateError;
-
         showMessage('signup-success', 'Check your email for verification link!');
         document.getElementById('signup-form').reset();
     } catch (error) {
