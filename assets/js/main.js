@@ -167,7 +167,6 @@ function showWelcomeMessage(message) {
     }, 4000);
 }
 
-// main.js
 document.addEventListener('DOMContentLoaded', async () => {
     try {
         const { data: { user } } = await supabaseClient.auth.getUser();
@@ -189,6 +188,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
 
         setupAuthListeners();
+        
+        if (window.location.pathname.includes('dashboard.html')) {
+            setupDashboardListeners();
+        }
     } catch (error) {
         console.error('Initialization error:', error);
         if (window.location.pathname === '/' || 
