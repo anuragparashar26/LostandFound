@@ -34,7 +34,7 @@ async function handleSignup(e) {
                     name: name,
                     full_name: name 
                 },
-                emailRedirectTo: window.location.origin + '/login.html'
+                emailRedirectTo: 'https://anuragparashar26.github.io/LostandFound/login.html'
             }
         });
         if (error) throw error;
@@ -65,7 +65,7 @@ async function handleForgotPassword(e) {
 
     try {
         const { error } = await supabaseClient.auth.resetPasswordForEmail(email, {
-            redirectTo: window.location.origin + '/reset-password.html'
+            redirectTo: 'https://anuragparashar26.github.io/LostandFound/reset-password.html'
         });
         if (error) throw error;
         showMessage('forgot-password-success', 'Password reset email sent! Check your inbox.');
@@ -90,19 +90,24 @@ function setupAuthListeners() {
     document.getElementById('login-form')?.addEventListener('submit', handleLogin);
     document.getElementById('signup-form')?.addEventListener('submit', handleSignup);
     document.getElementById('forgot-password-form')?.addEventListener('submit', handleForgotPassword);
-
     supabaseClient.auth.onAuthStateChange((event, session) => {
         if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') {
             currentUser = session?.user || null;
             updateAuthUI();
 
+            const isGitHubPages = window.location.hostname.includes('github.io');
+            const basePath = isGitHubPages ? '/LostandFound' : '';
+            if (window.location.hash.includes('access_token')) {
+                window.location.href = `${basePath}/dashboard.html`;
+                return;
+            }
             const isResetPasswordPage = window.location.pathname.includes('reset-password.html');
             if (isResetPasswordPage) {
                 return;
             }
 
             if (window.location.pathname.includes('login.html')) {
-                window.location.href = 'dashboard.html';
+                window.location.href = `${basePath}/dashboard.html`;
             }
             if (currentUser && !isResetPasswordPage && document.getElementById('welcome-message')) {
                 showWelcomeMessage(`Welcome back, ${currentUser.user_metadata.name || currentUser.email}!`);
@@ -110,7 +115,9 @@ function setupAuthListeners() {
         } else if (event === 'SIGNED_OUT') {
             currentUser = null;
             updateAuthUI();
-            window.location.href = 'index.html';
+            const isGitHubPages = window.location.hostname.includes('github.io');
+            const basePath = isGitHubPages ? '/LostandFound' : '';
+            window.location.href = `${basePath}/index.html`;
         }
     });
 }
