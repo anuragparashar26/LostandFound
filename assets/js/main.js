@@ -83,26 +83,40 @@ function displayItems(items, containerId, showActions = false) {
 
 async function loadAllItems() {
     try {
+       
         const { data: items, error: itemsError } = await supabaseClient
             .from('items')
             .select('*')
-            .order('date', { ascending: false });
+            .order('created_at', { ascending: false });
 
         if (itemsError) throw itemsError;
+
+        
+        const userIds = [...new Set(items.map(item => item.user_id))];
         const { data: profiles, error: profilesError } = await supabaseClient
             .from('profiles')
-            .select('user_id, full_name');
+            .select('user_id, full_name')
+            .in('user_id', userIds);
 
         if (profilesError) throw profilesError;
-        const userMap = new Map(profiles.map(profile => [profile.user_id, profile]));
-        allItems = items.map(item => ({
+
+        
+        const profileMap = profiles.reduce((acc, profile) => {
+            acc[profile.user_id] = profile.full_name;
+            return acc;
+        }, {});
+
+        
+        const transformedItems = items.map(item => ({
             ...item,
-            user_name: userMap.get(item.user_id)?.full_name || 'Anonymous'
+            user_name: profileMap[item.user_id] || 'Anonymous'
         }));
 
-        displayItems(allItems, 'all-items');
+        displayItems(transformedItems, 'all-items');
     } catch (error) {
-        document.getElementById('all-items').innerHTML = `<div class="error-msg">Error loading items: ${error.message}</div>`;
+        console.error('Error loading items:', error);
+        document.getElementById('all-items').innerHTML = 
+            `<div class="error-msg">Error loading items: ${error.message}</div>`;
     }
 }
 
