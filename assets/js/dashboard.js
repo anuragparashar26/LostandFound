@@ -46,7 +46,6 @@ async function handleEditItem(e) {
     const itemId = document.getElementById('edit-item-id').value;
     const status = document.getElementById('edit-item-status').value;
 
-    // Validate status
     if (!['lost', 'found'].includes(status)) {
         showError('edit-error', 'Please select a valid status (lost or found).');
         return;

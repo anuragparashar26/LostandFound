@@ -82,16 +82,26 @@ function displayItems(items, containerId, showActions = false) {
 }
 
 async function loadAllItems() {
+    const loadingContainer = document.getElementById('all-items');
+    if (!loadingContainer) return; 
+
     try {
-       
+    
+        loadingContainer.innerHTML = '<div class="loading">Loading items...</div>';
+        
+
         const { data: items, error: itemsError } = await supabaseClient
             .from('items')
             .select('*')
             .order('created_at', { ascending: false });
 
         if (itemsError) throw itemsError;
+        if (!items || items.length === 0) {
+            loadingContainer.innerHTML = '<div class="no-items">No items found</div>';
+            return;
+        }
 
-        
+
         const userIds = [...new Set(items.map(item => item.user_id))];
         const { data: profiles, error: profilesError } = await supabaseClient
             .from('profiles')
@@ -101,22 +111,28 @@ async function loadAllItems() {
         if (profilesError) throw profilesError;
 
         
-        const profileMap = profiles.reduce((acc, profile) => {
+        const profileMap = profiles?.reduce((acc, profile) => {
             acc[profile.user_id] = profile.full_name;
             return acc;
-        }, {});
+        }, {}) || {};
 
         
         const transformedItems = items.map(item => ({
             ...item,
-            user_name: profileMap[item.user_id] || 'Anonymous'
+            user_name: profileMap[item.user_id] || 'Anonymous',
+            date: item.created_at || item.date 
         }));
 
+        
         displayItems(transformedItems, 'all-items');
     } catch (error) {
         console.error('Error loading items:', error);
-        document.getElementById('all-items').innerHTML = 
-            `<div class="error-msg">Error loading items: ${error.message}</div>`;
+        loadingContainer.innerHTML = `
+            <div class="error-msg">
+                <i class="fas fa-exclamation-circle"></i>
+                Error loading items: ${error.message}
+                <button onclick="loadAllItems()" class="btn-retry">Retry</button>
+            </div>`;
     }
 }
 
@@ -146,18 +162,25 @@ function showWelcomeMessage(message) {
 
 document.addEventListener('DOMContentLoaded', async () => {
     try {
+        
+        if (window.location.pathname === '/' || 
+            window.location.pathname.includes('index.html')) {
+            await loadAllItems();
+        }
+
+        
         const { data: { user } } = await supabaseClient.auth.getUser();
         if (user) {
             currentUser = user;
-            updateAuthUI();
+            await updateAuthUI();
+            
+            
+            if (document.getElementById('user-items')) {
+                await loadUserItems();
+            }
         }
 
-        if (document.getElementById('all-items')) {
-            loadAllItems();
-        }
-        if (document.getElementById('user-items')) {
-            loadUserItems();
-        }
+
         if (document.getElementById('item-date')) {
             document.getElementById('item-date').valueAsDate = new Date();
         }
