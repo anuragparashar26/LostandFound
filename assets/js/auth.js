@@ -18,10 +18,41 @@ async function handleSignup(e) {
     e.preventDefault();
     const email = document.getElementById('signup-email').value;
     const password = document.getElementById('signup-password').value;
-
+    const name = document.getElementById('signup-name').value;
+    if (!name) {
+        showError('signup-error', 'Please enter your name');
+        return;
+    }
     try {
-        const { data, error } = await supabaseClient.auth.signUp({ email, password });
+        const { data, error } = await supabaseClient.auth.signUp({ 
+            email, 
+            password,
+            options: {
+                data: { 
+                    name: name,
+                    full_name: name 
+                }
+            }
+        });
         if (error) throw error;
+        const { error: profileError } = await supabaseClient
+            .from('profiles')
+            .insert([
+                { 
+                    user_id: data.user.id,
+                    full_name: name,
+                    display_name: name
+                }
+            ]);
+        if (profileError) throw profileError;
+        const { error: updateError } = await supabaseClient.auth.updateUser({
+            data: { 
+                name: name,
+                full_name: name 
+            }
+        });
+        if (updateError) throw updateError;
+
         showMessage('signup-success', 'Check your email for verification link!');
         document.getElementById('signup-form').reset();
     } catch (error) {
@@ -79,7 +110,7 @@ function setupAuthListeners() {
                 window.location.href = 'dashboard.html';
             }
             if (currentUser && !isResetPasswordPage && document.getElementById('welcome-message')) {
-                showWelcomeMessage(`Welcome back, ${currentUser.email}!`);
+                showWelcomeMessage(`Welcome back, ${currentUser.user_metadata.name || currentUser.email}!`);
             }
         } else if (event === 'SIGNED_OUT') {
             currentUser = null;
@@ -89,17 +120,30 @@ function setupAuthListeners() {
     });
 }
 
-function updateAuthUI() {
+async function updateAuthUI() {
     const guestButtons = document.getElementById('guest-buttons');
     const userButtons = document.getElementById('user-buttons');
     const userEmail = document.getElementById('user-email');
 
     if (currentUser) {
+        const { data: profile, error } = await supabaseClient
+            .from('profiles')
+            .select('full_name')
+            .eq('user_id', currentUser.id)
+            .single();
+
+        const displayName = profile?.full_name || 'User';
+
         guestButtons.style.display = 'none';
         userButtons.style.display = 'flex';
-        userEmail.textContent = currentUser.email;
+        if (userEmail) {
+            userEmail.innerHTML = `<i class="fas fa-user"></i> ${displayName}`;
+        }
     } else {
         guestButtons.style.display = 'flex';
         userButtons.style.display = 'none';
+        if (userEmail) {
+            userEmail.textContent = '';
+        }
     }
 }

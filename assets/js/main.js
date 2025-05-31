@@ -39,9 +39,9 @@ function displayItems(items, containerId, showActions = false) {
         return;
     }
 
-    // Store items in global array for reference
+    
     if (containerId === 'user-items') {
-        allItems = items; // Update global array for user items
+        allItems = items; 
     }
 
     const itemsHTML = items.map((item, index) => {
@@ -68,6 +68,7 @@ function displayItems(items, containerId, showActions = false) {
                 </div>
                 <div class="item-description">${item.description}</div>
                 <div class="item-meta">
+                    ${!showActions ? `<strong>Posted by:</strong> ${item.user_name || 'Anonymous'}<br>` : ''}
                     <strong>Date:</strong> ${formattedDate}<br>
                     <strong>Location:</strong> ${item.location || 'Not specified'}<br>
                     <strong>Contact:</strong> ${item.contact_info}
@@ -82,15 +83,24 @@ function displayItems(items, containerId, showActions = false) {
 
 async function loadAllItems() {
     try {
-        const { data, error } = await supabaseClient
+        const { data: items, error: itemsError } = await supabaseClient
             .from('items')
             .select('*')
             .order('date', { ascending: false });
 
-        if (error) throw error;
+        if (itemsError) throw itemsError;
+        const { data: profiles, error: profilesError } = await supabaseClient
+            .from('profiles')
+            .select('user_id, full_name');
 
-        allItems = data;
-        displayItems(data, 'all-items');
+        if (profilesError) throw profilesError;
+        const userMap = new Map(profiles.map(profile => [profile.user_id, profile]));
+        allItems = items.map(item => ({
+            ...item,
+            user_name: userMap.get(item.user_id)?.full_name || 'Anonymous'
+        }));
+
+        displayItems(allItems, 'all-items');
     } catch (error) {
         document.getElementById('all-items').innerHTML = `<div class="error-msg">Error loading items: ${error.message}</div>`;
     }
