@@ -29,10 +29,11 @@ async function handleSignup(e) {
     }
 }
 
-async function handleForgotPassword() {
-    const email = document.getElementById('login-email').value;
+async function handleForgotPassword(e) {
+    e.preventDefault();
+    const email = document.getElementById('forgot-password-email').value;
     if (!email) {
-        showError('login-error', 'Please enter your email to reset your password.');
+        showError('forgot-password-error', 'Please enter your email to reset your password.');
         return;
     }
 
@@ -41,9 +42,10 @@ async function handleForgotPassword() {
             redirectTo: window.location.origin + '/reset-password.html'
         });
         if (error) throw error;
-        showMessage('login-error', 'Password reset email sent! Check your inbox.');
+        showMessage('forgot-password-success', 'Password reset email sent! Check your inbox.');
+        document.getElementById('forgot-password-form').reset();
     } catch (error) {
-        showError('login-error', error.message);
+        showError('forgot-password-error', error.message);
     }
 }
 
@@ -61,19 +63,22 @@ async function signOut() {
 function setupAuthListeners() {
     document.getElementById('login-form')?.addEventListener('submit', handleLogin);
     document.getElementById('signup-form')?.addEventListener('submit', handleSignup);
+    document.getElementById('forgot-password-form')?.addEventListener('submit', handleForgotPassword);
 
     supabaseClient.auth.onAuthStateChange((event, session) => {
         if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') {
             currentUser = session?.user || null;
             updateAuthUI();
+
             const isResetPasswordPage = window.location.pathname.includes('reset-password.html');
             if (isResetPasswordPage) {
                 return;
             }
+
             if (window.location.pathname.includes('login.html')) {
                 window.location.href = 'dashboard.html';
             }
-            if (currentUser && !isResetPasswordPage) {
+            if (currentUser && !isResetPasswordPage && document.getElementById('welcome-message')) {
                 showWelcomeMessage(`Welcome back, ${currentUser.email}!`);
             }
         } else if (event === 'SIGNED_OUT') {
