@@ -81,19 +81,24 @@ function displayItems(items, containerId, showActions = false) {
     container.innerHTML = `<div class="items-grid">${itemsHTML}</div>`;
 }
 
-async function loadAllItems() {
+async function loadAllItems(attempt = 1, maxAttempts = 3) {
     const loadingContainer = document.getElementById('all-items');
-    if (!loadingContainer) return; 
+    if (!loadingContainer) return;
 
     try {
-    
         loadingContainer.innerHTML = '<div class="loading">Loading items...</div>';
-        
 
-        const { data: items, error: itemsError } = await supabaseClient
+    
+        const timeoutPromise = new Promise((_, reject) => {
+            setTimeout(() => reject(new Error('Request timed out')), 10000); 
+        });
+
+        const fetchPromise = supabaseClient
             .from('items')
             .select('*')
             .order('created_at', { ascending: false });
+
+        const { data: items, error: itemsError } = await Promise.race([fetchPromise, timeoutPromise]);
 
         if (itemsError) throw itemsError;
         if (!items || items.length === 0) {
@@ -101,32 +106,34 @@ async function loadAllItems() {
             return;
         }
 
-
         const userIds = [...new Set(items.map(item => item.user_id))];
         const { data: profiles, error: profilesError } = await supabaseClient
             .from('profiles')
             .select('user_id, full_name')
             .in('user_id', userIds);
 
-        if (profilesError) throw profilesError;
+        if (profilesError) {
+            console.error('Error fetching profiles:', profilesError);
+        }
 
-        
         const profileMap = profiles?.reduce((acc, profile) => {
-            acc[profile.user_id] = profile.full_name;
+            acc[profile.user_id] = profile.full_name || 'Anonymous';
             return acc;
         }, {}) || {};
 
-        
         const transformedItems = items.map(item => ({
             ...item,
             user_name: profileMap[item.user_id] || 'Anonymous',
-            date: item.created_at || item.date 
+            date: item.created_at || item.date
         }));
 
-        
         displayItems(transformedItems, 'all-items');
     } catch (error) {
-        console.error('Error loading items:', error);
+        console.error(`Attempt ${attempt} failed:`, error);
+        if (attempt < maxAttempts) {
+            setTimeout(() => loadAllItems(attempt + 1, maxAttempts), 1000); 
+            return;
+        }
         loadingContainer.innerHTML = `
             <div class="error-msg">
                 <i class="fas fa-exclamation-circle"></i>
@@ -162,24 +169,20 @@ function showWelcomeMessage(message) {
 
 document.addEventListener('DOMContentLoaded', async () => {
     try {
-        
-        if (window.location.pathname === '/' || 
-            window.location.pathname.includes('index.html')) {
-            await loadAllItems();
-        }
-
-        
+    
         const { data: { user } } = await supabaseClient.auth.getUser();
         if (user) {
             currentUser = user;
             await updateAuthUI();
-            
-            
             if (document.getElementById('user-items')) {
                 await loadUserItems();
             }
         }
 
+        if (window.location.pathname === '/' || 
+            window.location.pathname.includes('index.html')) {
+            await loadAllItems();
+        }
 
         if (document.getElementById('item-date')) {
             document.getElementById('item-date').valueAsDate = new Date();
@@ -189,5 +192,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         setupDashboardListeners();
     } catch (error) {
         console.error('Initialization error:', error);
+        if (window.location.pathname === '/' || 
+            window.location.pathname.includes('index.html')) {
+            await loadAllItems();
+        }
     }
 });
