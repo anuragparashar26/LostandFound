@@ -31,7 +31,8 @@ async function handleSignup(e) {
                 data: { 
                     name: name,
                     full_name: name 
-                }
+                },
+                emailRedirectTo: window.location.origin + '/login.html'
             }
         });
         if (error) throw error;
