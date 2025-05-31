@@ -38,20 +38,28 @@ async function handleSignup(e) {
             }
         });
         if (error) throw error;
-        const { error: profileError } = await supabaseClient
-            .from('profiles')
-            .insert([
-                { 
-                    user_id: data.user.id,
-                    full_name: name,
-                    display_name: name
-                }
-            ]);
-        if (profileError) throw profileError;
+
+        if (data?.user?.id && !data?.user?.identities?.length) {
+            const { error: profileError } = await supabaseClient
+                .from('profiles')
+                .insert([
+                    { 
+                        user_id: data.user.id,
+                        full_name: name,
+                        display_name: name
+                    }
+                ]);
+            if (profileError) throw profileError;
+        }
+
         showMessage('signup-success', 'Check your email for verification link!');
         document.getElementById('signup-form').reset();
     } catch (error) {
-        showError('signup-error', error.message);
+        if (error.message.includes('User already registered')) {
+            showError('signup-error', 'An account with this email already exists. Please login instead.');
+        } else {
+            showError('signup-error', error.message);
+        }
     }
 }
 
