@@ -57,9 +57,12 @@
                     <div class="form-group">
                         <label for="login-password"><i class="fas fa-lock"></i> Password</label>
                         <input type="password" id="login-password" required>
-                        <div style="margin-top: 5px;">
-                            <a href="#" onclick="handleForgotPassword()" style="color: var(--primary); font-size: 14px;">Forgot Password?</a>
-                        </div>
+                        <!-- Replace the existing forgot password link with this -->
+<div style="margin-top: 5px;">
+    <a href="#" onclick="showSection('forgot-password')" style="color: var(--primary); font-size: 14px;">
+        Forgot Password?
+    </a>
+</div>
                     </div>
                     <div class="form-group">
                         <button type="submit">Login</button>
@@ -68,6 +71,32 @@
                 </form>
             </div>
         </div>
+
+
+        <!-- Add this after the login-section div and before the signup-section div -->
+<div id="forgot-password-section" class="section">
+    <div class="section-card">
+        <h2><i class="fas fa-key"></i> Reset Password</h2>
+        <div id="forgot-password-error" class="error-msg" style="display: none;">
+            <i class="fas fa-exclamation-circle"></i>
+            <span></span>
+        </div>
+        <div id="forgot-password-success" class="success-msg" style="display: none;">
+            <i class="fas fa-check-circle"></i>
+            <span></span>
+        </div>
+        <form id="forgot-password-form">
+            <div class="form-group">
+                <label for="forgot-password-email"><i class="fas fa-envelope"></i> Email</label>
+                <input type="email" id="forgot-password-email" required>
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn-primary">Send Reset Link</button>
+                <button type="button" onclick="showSection('login')" class="btn-secondary">Back to Login</button>
+            </div>
+        </form>
+    </div>
+</div>
 
         <div id="signup-section" class="section">
             <div class="section-card">

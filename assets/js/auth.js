@@ -58,18 +58,28 @@ async function handleSignup(e) {
 async function handleForgotPassword(e) {
     e.preventDefault();
     const email = document.getElementById('forgot-password-email').value;
+    
     if (!email) {
-        showError('forgot-password-error', 'Please enter your email to reset your password.');
+        showError('forgot-password-error', 'Please enter your email');
         return;
     }
 
     try {
+        const isGitHubPages = window.location.hostname.includes('github.io');
+        const basePath = isGitHubPages ? '/LostandFound' : '';
+        
         const { error } = await supabaseClient.auth.resetPasswordForEmail(email, {
-            redirectTo: 'https://anuragparashar26.github.io/LostandFound/reset-password.html'
+            redirectTo: `${window.location.origin}${basePath}/reset-password.html`
         });
+        
         if (error) throw error;
+        
         showMessage('forgot-password-success', 'Password reset email sent! Check your inbox.');
         document.getElementById('forgot-password-form').reset();
+        
+        setTimeout(() => {
+            showSection('login');
+        }, 2000);
     } catch (error) {
         showError('forgot-password-error', error.message);
     }
