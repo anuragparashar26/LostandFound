@@ -83,37 +83,45 @@ function displayItems(items, containerId, showActions = false) {
 
 async function loadAllItems(attempt = 1, maxAttempts = 3) {
     const loadingContainer = document.getElementById('all-items');
-    if (!loadingContainer) return;
+    if (!loadingContainer) {
+        console.error('Error: all-items container not found');
+        return;
+    }
 
     try {
+        console.log(`Attempt ${attempt}: Starting loadAllItems`);
         loadingContainer.innerHTML = '<div class="loading">Loading items...</div>';
 
-    
         const timeoutPromise = new Promise((_, reject) => {
-            setTimeout(() => reject(new Error('Request timed out')), 10000); 
+            setTimeout(() => reject(new Error('Request timed out')), 10000);
         });
 
+        console.log('Fetching items...');
         const fetchPromise = supabaseClient
             .from('items')
             .select('*')
             .order('created_at', { ascending: false });
 
         const { data: items, error: itemsError } = await Promise.race([fetchPromise, timeoutPromise]);
+        console.log('Items fetch result:', { items, itemsError });
 
         if (itemsError) throw itemsError;
         if (!items || items.length === 0) {
+            console.log('No items found');
             loadingContainer.innerHTML = '<div class="no-items">No items found</div>';
             return;
         }
 
         const userIds = [...new Set(items.map(item => item.user_id))];
+        console.log('Fetching profiles for user IDs:', userIds);
         const { data: profiles, error: profilesError } = await supabaseClient
             .from('profiles')
             .select('user_id, full_name')
             .in('user_id', userIds);
+        console.log('Profiles fetch result:', { profiles, profilesError });
 
         if (profilesError) {
-            console.error('Error fetching profiles:', profilesError);
+            console.warn('Profiles fetch failed, using fallback:', profilesError);
         }
 
         const profileMap = profiles?.reduce((acc, profile) => {
@@ -121,17 +129,21 @@ async function loadAllItems(attempt = 1, maxAttempts = 3) {
             return acc;
         }, {}) || {};
 
+        console.log('Profile map:', profileMap);
         const transformedItems = items.map(item => ({
             ...item,
             user_name: profileMap[item.user_id] || 'Anonymous',
             date: item.created_at || item.date
         }));
 
+        console.log('Transformed items:', transformedItems);
         displayItems(transformedItems, 'all-items');
+        console.log('Items displayed');
     } catch (error) {
         console.error(`Attempt ${attempt} failed:`, error);
         if (attempt < maxAttempts) {
-            setTimeout(() => loadAllItems(attempt + 1, maxAttempts), 1000); 
+            console.log(`Retrying... Attempt ${attempt + 1}`);
+            setTimeout(() => loadAllItems(attempt + 1, maxAttempts), 1000);
             return;
         }
         loadingContainer.innerHTML = `
