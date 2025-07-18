@@ -23,9 +23,6 @@ A web application for posting and finding lost or found items. Users can sign up
   - [`@supabase/supabase-js@2`](https://www.npmjs.com/package/@supabase/supabase-js)
   - [Font Awesome 6.0.0](https://fontawesome.com/)
   - [Google Fonts - Poppins](https://fonts.google.com/specimen/Poppins)
-
-- **Deployment**: [Vercel](https://vercel.com/)
-
 ---
 
 ## 🚀 Usage
@@ -39,7 +36,7 @@ A web application for posting and finding lost or found items. Users can sign up
 
 ## 🔗 Live Demo
 
-Visit the deployed app at: [lost-and-found-mini](https://lost-and-found-mini.vercel.app)
+Visit the deployed app at Netlify: [Live](https://lost-and-found-mini.vercel.app)
 
 ---
 
