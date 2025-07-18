@@ -351,67 +351,160 @@
 
 /* Responsive Design */
 @media (max-width: 768px) {
+    .hero {
+        padding: 50px 0 50px;
+    }
+
     .hero-content {
         grid-template-columns: 1fr;
-        margin: 0 auto;
+        gap: 24px;
         text-align: center;
     }
 
     .hero-title {
-        font-size: 2.5rem;
+        font-size: 2rem;
+        margin-bottom: 12px;
     }
 
     .hero-subtitle {
-        font-size: 1rem;
+        font-size: 0.98rem;
+        margin-bottom: 22px;
     }
 
     .hero-buttons {
         flex-direction: column;
-        align-items: center;
+        gap: 12px;
+        width: 100%;
+        margin-bottom: 24px;
+    }
+
+    .btn-hero-primary,
+    .btn-hero-secondary {
+        width: 100%;
+        padding: 13px 0;
+        font-size: 1rem;
     }
 
     .hero-stats {
-        justify-content: center;
-        gap: 30px;
+        flex-direction: column;
+        gap: 10px;
+        margin-top: 18px;
+    }
+
+    .stat-number {
+        font-size: 1.5rem;
+    }
+
+    .stat-label {
+        font-size: 0.85rem;
     }
 
     .floating-icons {
         display: none;
     }
 
-    .floating-icon {
-        font-size: 2rem;
+    .features {
+        padding: 24px 0;
     }
 
     .section-title {
-        font-size: 2rem;
-        margin-bottom: 0px;
-        margin-top: 0px;
+        font-size: 1.3rem;
+        margin-bottom: 18px;
+        margin-top: 0;
     }
 
     .features-grid {
         grid-template-columns: 1fr;
-        gap: 30px;
-        padding: 40px 20px;
+        gap: 14px;
+        padding: 0 0;
     }
 
-    .item-card {
-        padding: 20px;
+    .feature-card {
+        padding: 18px 15px;
+        margin-left: 10px;
+        margin-right: 10px;
+        border-radius: 12px;
+    }
+
+    .feature-card h3 {
+        font-size: 1.1rem;
+        margin-bottom: 8px;
+    }
+
+    .feature-card p {
+        font-size: 0.95rem;
+    }
+
+    .recent-items {
+        padding: 18px 0;
     }
 
     .recent-header {
         flex-direction: column;
-        gap: 20px;
-        text-align: center;
+        gap: 10px;
+        margin-bottom: 14px;
+    }
+
+    .btn-view-all {
+        width: 100%;
+        padding: 10px 0;
+        font-size: 1rem;
+        border-radius: 20px;
+    }
+
+    .item-card {
+        padding: 12px;
+        border-radius: 10px;
+    }
+
+    .cta {
+        padding: 18px 0;
     }
 
     .cta-content h2 {
-        font-size: 2rem;
+        font-size: 1.3rem;
+        margin-bottom: 10px;
+    }
+
+    .cta-content p {
+        font-size: 1rem;
+        margin-bottom: 18px;
+    }
+
+    .btn-cta {
+        width: 100%;
+        padding: 13px 0;
+        font-size: 1rem;
+        border-radius: 20px;
+    }
+
+    .footer {
+        padding: 18px 0 8px;
     }
 
     .footer-content {
         grid-template-columns: 1fr;
-        gap: 30px;
+        gap: 10px;
+        margin-bottom: 8px;
         text-align: center;
+    }
+
+    .footer-brand .logo {
+        font-size: 1.1rem;
+        margin-bottom: 10px;
+    }
+
+    .footer-section h4 {
+        font-size: 1rem;
+        margin-bottom: 10px;
+    }
+
+    .footer-section ul li {
+        margin-bottom: 6px;
+    }
+
+    .footer-bottom {
+        padding-top: 6px;
+        font-size: 0.95rem;
     }
 }
