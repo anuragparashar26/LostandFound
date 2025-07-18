@@ -1,4 +1,5 @@
 let allItems = [];
+let originalItems = [];
 
 function showSection(sectionName) {
     document.querySelectorAll('.section').forEach(section => {
@@ -137,7 +138,9 @@ async function loadAllItems(attempt = 1, maxAttempts = 3) {
         }));
 
         console.log('Transformed items:', transformedItems);
+        originalItems = transformedItems; 
         displayItems(transformedItems, 'all-items');
+        setupSearchFunctionality(); 
         console.log('Items displayed');
     } catch (error) {
         console.error(`Attempt ${attempt} failed:`, error);
@@ -152,6 +155,120 @@ async function loadAllItems(attempt = 1, maxAttempts = 3) {
                 Error loading items: ${error.message}
                 <button onclick="loadAllItems()" class="btn-retry">Retry</button>
             </div>`;
+    }
+}
+
+function setupSearchFunctionality() {
+    const searchInput = document.getElementById('search-input');
+    const statusFilter = document.getElementById('status-filter');
+    const sortBy = document.getElementById('sort-by');
+    const searchBtn = document.getElementById('search-btn');
+    const clearSearch = document.getElementById('clear-search');
+    const resetSearch = document.getElementById('reset-search');
+    const searchInfo = document.getElementById('search-info');
+
+    if (!searchInput) return; 
+
+    searchInput.addEventListener('input', (e) => {
+        const query = e.target.value.trim();
+        if (query.length > 0) {
+            clearSearch.style.display = 'block';
+        } else {
+            clearSearch.style.display = 'none';
+        }
+        
+        clearTimeout(searchInput.debounceTimer);
+        searchInput.debounceTimer = setTimeout(() => {
+            performSearch();
+        }, 300);
+    });
+
+    statusFilter?.addEventListener('change', performSearch);
+    sortBy?.addEventListener('change', performSearch);
+    searchBtn?.addEventListener('click', performSearch);
+
+    clearSearch?.addEventListener('click', () => {
+        searchInput.value = '';
+        clearSearch.style.display = 'none';
+        performSearch();
+    });
+
+    resetSearch?.addEventListener('click', () => {
+        searchInput.value = '';
+        statusFilter.value = '';
+        sortBy.value = 'newest';
+        clearSearch.style.display = 'none';
+        searchInfo.style.display = 'none';
+        displayItems(originalItems, 'all-items');
+    });
+
+    searchInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            performSearch();
+        }
+    });
+}
+
+function performSearch() {
+    const searchInput = document.getElementById('search-input');
+    const statusFilter = document.getElementById('status-filter');
+    const sortBy = document.getElementById('sort-by');
+    const searchInfo = document.getElementById('search-info');
+    const resultsCount = document.getElementById('results-count');
+
+    if (!searchInput || !originalItems.length) return;
+
+    const query = searchInput.value.trim().toLowerCase();
+    const statusValue = statusFilter?.value || '';
+    const sortValue = sortBy?.value || 'newest';
+
+    let filteredItems = [...originalItems];
+
+    if (query) {
+        filteredItems = filteredItems.filter(item => 
+            item.item_name.toLowerCase().includes(query) ||
+            item.description.toLowerCase().includes(query) ||
+            (item.location && item.location.toLowerCase().includes(query)) ||
+            (item.user_name && item.user_name.toLowerCase().includes(query))
+        );
+    }
+
+    if (statusValue) {
+        filteredItems = filteredItems.filter(item => item.status === statusValue);
+    }
+
+    filteredItems.sort((a, b) => {
+        switch (sortValue) {
+            case 'oldest':
+                return new Date(a.date) - new Date(b.date);
+            case 'name':
+                return a.item_name.localeCompare(b.item_name);
+            case 'newest':
+            default:
+                return new Date(b.date) - new Date(a.date);
+        }
+    });
+
+    const isFiltering = query || statusValue || sortValue !== 'newest';
+    if (isFiltering && searchInfo && resultsCount) {
+        searchInfo.style.display = 'flex';
+        const totalItems = originalItems.length;
+        const foundItems = filteredItems.length;
+        resultsCount.textContent = `Showing ${foundItems} of ${totalItems} items`;
+    } else if (searchInfo) {
+        searchInfo.style.display = 'none';
+    }
+
+    if (filteredItems.length === 0 && isFiltering) {
+        document.getElementById('all-items').innerHTML = `
+            <div class="no-results">
+                <i class="fas fa-search"></i>
+                <h3>No items found</h3>
+                <p>Try adjusting your search terms or filters to find what you're looking for.</p>
+            </div>
+        `;
+    } else {
+        displayItems(filteredItems, 'all-items');
     }
 }
 

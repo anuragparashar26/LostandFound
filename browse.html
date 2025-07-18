@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lost & Found - Browse Items</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-search"></i>
+                    <h1><a href="index.html" style="color: inherit; text-decoration: none;">Lost & Found</a></h1>
+                </div>
+                <div class="auth-buttons">
+                    <div id="guest-buttons">
+                        <button onclick="window.location.href='index.html'" class="btn-glass">
+                            <i class="fas fa-home"></i> Home
+                        </button>
+                        <button onclick="window.location.href='login.html'" class="btn-glass">
+                            <i class="fas fa-sign-in-alt"></i> Login
+                        </button>
+                        <button onclick="window.location.href='login.html#signup'">
+                            <i class="fas fa-user-plus"></i> Sign Up
+                        </button>
+                    </div>
+                    <div id="user-buttons" style="display: none;">
+                        <span id="user-email"></span>
+                        <button onclick="window.location.href='dashboard.html'">
+                            <i class="fas fa-tachometer-alt"></i> Dashboard
+                        </button>
+                        <button onclick="signOut()" class="btn-danger">
+                            <i class="fas fa-sign-out-alt"></i> Sign Out
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div id="browse-section" class="section active">
+            <div class="section-card">
+                <h2><i class="fas fa-list"></i> All Lost & Found Items</h2>
+                
+                <!-- Search Controls -->
+                <div class="search-controls">
+                    <div class="search-bar">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="search-input" placeholder="Search items by name, description, or location...">
+                        <button id="clear-search" class="btn-clear" style="display: none;">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="search-filters">
+                        <select id="status-filter">
+                            <option value="">All Items</option>
+                            <option value="lost">Lost Items</option>
+                            <option value="found">Found Items</option>
+                        </select>
+                        <select id="sort-by">
+                            <option value="newest">Newest First</option>
+                            <option value="oldest">Oldest First</option>
+                            <option value="name">By Name</option>
+                        </select>
+                        <button id="search-btn" class="btn-search">
+                            <i class="fas fa-filter"></i> Apply Filters
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Search Results Info -->
+                <div id="search-info" class="search-info" style="display: none;">
+                    <span id="results-count"></span>
+                    <button id="reset-search" class="btn-reset">
+                        <i class="fas fa-undo"></i> Show All Items
+                    </button>
+                </div>
+                
+                <div id="welcome-message" class="error-msg" style="display: none;">
+                    <i class="fas fa-check-circle"></i>
+                    <span></span>
+                </div>
+                <div id="all-items">
+                    <div class="loading">Loading items...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="assets/js/supabaseClient.js"></script>
+    <script src="assets/js/auth.js"></script>
+    <script src="assets/js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                const { data: { user } } = await supabaseClient.auth.getUser();
+                if (user) {
+                    currentUser = user;
+                    await updateAuthUI();
+                }
+                await loadAllItems();
+                setupAuthListeners();
+            } catch (error) {
+                console.error('Initialization error:', error);
+                await loadAllItems();
+            }
+        });
+    </script>
+</body>
+</html>

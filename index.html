@@ -3,11 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lost & Found - Home</title>
+    <title>Lost & Found - Reuniting People with Their Belongings</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/landing.css">
 </head>
 <body>
     <header>
@@ -19,10 +20,13 @@
                 </div>
                 <div class="auth-buttons">
                     <div id="guest-buttons">
+                        <button onclick="window.location.href='browse.html'" class="btn-glass">
+                            <i class="fas fa-eye"></i> Browse Items
+                        </button>
                         <button onclick="window.location.href='login.html'" class="btn-glass">
                             <i class="fas fa-sign-in-alt"></i> Login
                         </button>
-                        <button onclick="window.location.href='login.html#signup'" class="btn-secondary">
+                        <button onclick="window.location.href='login.html#signup'">
                             <i class="fas fa-user-plus"></i> Sign Up
                         </button>
                     </div>
@@ -40,19 +44,231 @@
         </div>
     </header>
 
-    <div class="container">
-        <div id="home-section" class="section active">
-            <div class="section-card">
-                <h2><i class="fas fa-list"></i> All Lost & Found Items</h2>
-                <div id="all-items">
-                    <p>Loading items...</p>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <h2 class="hero-title">Lost Something? Found Something?</h2>
+                    <p class="hero-subtitle">Connect with your community to reunite people with their belongings. Our platform makes it easy to report lost items and help others find what they're looking for.</p>
+                    <div class="hero-buttons">
+                        <button onclick="window.location.href='login.html#signup'" class="btn-hero-primary">
+                            <i class="fas fa-plus-circle"></i> Post an Item
+                        </button>
+                        <button onclick="window.location.href='browse.html'" class="btn-hero-secondary">
+                            <i class="fas fa-search"></i> Search Items
+                        </button>
+                    </div>
+                    <div class="hero-stats">
+                        <div class="stat">
+                            <div class="stat-number" id="total-items">0</div>
+                            <div class="stat-label">Items Posted</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-number" id="found-items">0</div>
+                            <div class="stat-label">Items Found & Posted</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="hero-visual">
+                    <div class="floating-icons">
+                        <i class="fas fa-mobile-alt floating-icon"></i>
+                        <i class="fas fa-wallet floating-icon"></i>
+                        <i class="fas fa-key floating-icon"></i>
+                        <i class="fas fa-camera floating-icon"></i>
+                        <i class="fas fa-laptop floating-icon"></i>
+                        <i class="fas fa-glasses floating-icon"></i>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features">
+        <div class="container">
+            <h2 class="section-title">How It Works</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon lost">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <h3>Report Lost Items</h3>
+                    <p>Lost something? Create a detailed post with description, location, and contact info to help others identify and return your item.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon found">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <h3>Post Found Items</h3>
+                    <p>Found something that's not yours? Post it here to help the owner find their lost belonging and make someone's day better.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon search">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <h3>Search & Browse</h3>
+                    <p>Browse through posted items, search by keywords, and filter by date or location to find what you're looking for.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon connect">
+                        <i class="fas fa-handshake"></i>
+                    </div>
+                    <h3>Connect & Reunite</h3>
+                    <p>Use the provided contact information to reach out and arrange the safe return of lost items to their rightful owners.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Recent Items Preview -->
+    <section class="recent-items">
+        <div class="container">
+            <div class="recent-header">
+                <h2 class="section-title">Recent Posts</h2>
+                <button onclick="window.location.href='browse.html'" class="btn-view-all">
+                    View All Items <i class="fas fa-arrow-right"></i>
+                </button>
+            </div>
+            <div id="welcome-message" class="error-msg" style="display: none;">
+                <i class="fas fa-check-circle"></i>
+                <span></span>
+            </div>
+            <div id="recent-items-container">
+                <div class="loading">Loading recent items...</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="cta">
+        <div class="container">
+            <div class="cta-content">
+                <h2>Ready to Help Your Community?</h2>
+                <p>Join users who are making a difference by helping reunite people with their lost belongings.</p>
+                <button onclick="window.location.href='login.html#signup'" class="btn-cta">
+                    <i class="fas fa-heart"></i> Get Started Today
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <div class="logo">
+                        <i class="fas fa-search"></i>
+                        <span>Lost & Found</span>
+                    </div>
+                    <p>Reconnecting people with their belongings, one item at a time.</p>
+                </div>
+                <div class="footer-links">
+                    <div class="footer-section">
+                        <h4>Quick Links</h4>
+                        <ul>
+                            <li><a href="browse.html">Browse Items</a></li>
+                            <li><a href="login.html">Login</a></li>
+                            <li><a href="login.html#signup">Sign Up</a></li>
+                            <li><a href="dashboard.html">Dashboard</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-section">
+                        <h4>Support</h4>
+                        <ul>
+                            <li><a href="#help">Help Center</a></li>
+                            <li><a href="#contact">Contact Us</a></li>
+                            <li><a href="#privacy">Privacy Policy</a></li>
+                            <li><a href="#terms">Terms of Service</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Lost & Found. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
 
     <script src="assets/js/supabaseClient.js"></script>
     <script src="assets/js/auth.js"></script>
     <script src="assets/js/main.js"></script>
+    <script>
+        async function loadRecentItems() {
+            try {
+                const { data: items, error } = await supabaseClient
+                    .from('items')
+                    .select('*')
+                    .order('created_at', { ascending: false })
+                    .limit(6);
+
+                if (error) throw error;
+
+                const userIds = [...new Set(items?.map(item => item.user_id) || [])];
+                let profileMap = {};
+                
+                if (userIds.length > 0) {
+                    const { data: profiles } = await supabaseClient
+                        .from('profiles')
+                        .select('user_id, full_name')
+                        .in('user_id', userIds);
+                    
+                    profileMap = profiles?.reduce((acc, profile) => {
+                        acc[profile.user_id] = profile.full_name || 'Anonymous';
+                        return acc;
+                    }, {}) || {};
+                }
+
+                const transformedItems = items?.map(item => ({
+                    ...item,
+                    user_name: profileMap[item.user_id] || 'Anonymous',
+                    date: item.created_at || item.date
+                })) || [];
+
+                displayItems(transformedItems, 'recent-items-container');
+                
+
+                updateStats(items);
+            } catch (error) {
+                document.getElementById('recent-items-container').innerHTML = 
+                    '<div class="error-msg"><i class="fas fa-exclamation-circle"></i> <span>Unable to load recent items</span></div>';
+            }
+        }
+
+        async function updateStats(items) {
+            try {
+                const { count: totalItems } = await supabaseClient
+                    .from('items')
+                    .select('*', { count: 'exact', head: true });
+                
+                const { count: foundItems } = await supabaseClient
+                    .from('items')
+                    .select('*', { count: 'exact', head: true })
+                    .eq('status', 'found');
+
+                document.getElementById('total-items').textContent = totalItems || 0;
+                document.getElementById('found-items').textContent = foundItems || 0;
+            } catch (error) {
+                console.error('Error loading stats:', error);
+            }
+        }
+
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                const { data: { user } } = await supabaseClient.auth.getUser();
+                if (user) {
+                    currentUser = user;
+                    await updateAuthUI();
+                }
+                
+                await loadRecentItems();
+                setupAuthListeners();
+            } catch (error) {
+                console.error('Initialization error:', error);
+                await loadRecentItems();
+            }
+        });
+    </script>
 </body>
 </html>
